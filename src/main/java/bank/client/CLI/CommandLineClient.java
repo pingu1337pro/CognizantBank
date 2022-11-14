@@ -1,30 +1,33 @@
-package bank.client;
+package bank.client.CLI;
 
-import bank.business.BankInterface;
-import bank.business.Customer;
-import bank.business.Teller;
+import bank.presentation.Teller;
+import bank.client.MenuHelper;
+import bank.core.Customer;
+import bank.presentation.ClientBlueprint;
 import lombok.Getter;
 import lombok.Setter;
 import resources.Helper;
-import resources.LogHandler;
+import bank.business.LogHandler;
 import resources.PasswordHasher;
 
 @Getter
 @Setter
-public class CommandLineClient extends BankAbstractClient implements Teller {
+public class CommandLineClient extends ClientBlueprint {
 
     private Customer customer;
 
 
-    public CommandLineClient(BankInterface bank) {
-        super(bank);
+    public CommandLineClient(Teller teller) {
+        super(teller);
+        initialize();
+        runBank();
     }
 
     public void runBank() {
         boolean exitBank = false;
         boolean loggedIn = false;
         do {
-            BankAbstractClient.initialMenu();
+            MenuHelper.initialMenu();
             int choice = Helper.readInt();
             switch (choice) {
                 case 1:
@@ -36,7 +39,7 @@ public class CommandLineClient extends BankAbstractClient implements Teller {
                     loggedIn = true;
                     break;
                 case 2:
-                    BankAbstractClient.accountCreationMenu();
+                    MenuHelper.accountCreationMenu();
                     System.out.print("Please enter your name: ");
                     String name = Helper.readLine();
                     System.out.print("Please enter your email: ");
@@ -45,7 +48,7 @@ public class CommandLineClient extends BankAbstractClient implements Teller {
                     String newUserName = Helper.readLine();
                     System.out.print("Please enter your password: ");
                     String newPassword = Helper.readLine();
-                    this.createCustomerAccount(name, email, newUserName, newPassword);
+                    this.getTeller().createCustomerAccount(name, email, newUserName, newPassword);
                     break;
                 case 3:
                     exitBank = true;
@@ -59,25 +62,25 @@ public class CommandLineClient extends BankAbstractClient implements Teller {
         if (loggedIn && !this.customer.hasCheckingAccount() && !this.customer.hasSavingsAccount()) {
             boolean exitInnerMenu = false;
             do {
-                BankAbstractClient.innerMenuNoAccounts();
+                MenuHelper.innerMenuNoAccounts();
                 int choice = Helper.readInt();
                 switch (choice) {
                     case 1:
                         System.out.println("Please enter the initial deposit amount: ");
-                        Double savingsAmount = Helper.readDouble();
-                        this.createSavingsAccount(savingsAmount);
+                        double savingsAmount = Helper.readDouble();
+                        this.getTeller().createSavingsAccount(this.customer, savingsAmount);
                         exitInnerMenu = true;
                         break;
                     case 2:
                         System.out.println("Please enter the initial deposit amount: ");
-                        Double depositAmount = Helper.readDouble();
-                        this.createCheckingAccount(depositAmount);
+                        double depositAmount = Helper.readDouble();
+                        this.getTeller().createCheckingAccount(this.customer, depositAmount);
                         exitInnerMenu = true;
                         break;
                     case 3:
                         System.out.println("Please enter your password: ");
                         String password = Helper.readLine();
-                        this.removeCustomerAccount(this.customer.getName(), password);
+                        this.getTeller().removeCustomerAccount(this.customer.getName(), password);
                         break;
                     case 4:
                         exitInnerMenu = true;
@@ -93,7 +96,7 @@ public class CommandLineClient extends BankAbstractClient implements Teller {
         if (loggedIn && !this.customer.hasCheckingAccount() && this.customer.hasSavingsAccount()) {
             boolean exitInnerSavingsMenu = false;
             do {
-                BankAbstractClient.innerMenuWithSavingsAccount();
+                MenuHelper.innerMenuWithSavingsAccount();
                 int choice = Helper.readInt();
                 switch (choice) {
                     case 1:
@@ -101,32 +104,32 @@ public class CommandLineClient extends BankAbstractClient implements Teller {
                         do {
                             System.out.println("Hello " + this.customer.getName() + "!");
                             System.out.println("Your savings account overview: " + this.customer.getAccountByType("savings"));
-                            BankAbstractClient.savingsMenu();
+                            MenuHelper.savingsMenu();
                             int savingsChoice = Helper.readInt();
                             switch (savingsChoice) {
                                 case 1:
                                     System.out.println("Please enter the amount to deposit: ");
-                                    Double savingsDepositAmount = Helper.readDouble();
-                                    this.getBank().depositFunds(this.customer.getAccountByType("savings"), savingsDepositAmount);
+                                    double savingsDepositAmount = Helper.readDouble();
+                                    this.getTeller().depositFunds(this.customer.getAccountByType("savings"), savingsDepositAmount);
                                     break;
                                 case 2:
                                     System.out.println("Please enter the amount to withdraw: ");
-                                    Double savingsWithdrawAmount = Helper.readDouble();
-                                    this.getBank().withdrawFunds(this.customer.getAccountByType("savings"), savingsWithdrawAmount);
+                                    double savingsWithdrawAmount = Helper.readDouble();
+                                    this.getTeller().withdrawFunds(this.customer.getAccountByType("savings"), savingsWithdrawAmount);
                                     break;
                                 case 3:
                                     System.out.println("Please enter the account number to transfer to: ");
-                                    Integer nrToTransferTo = Helper.readInt();
+                                    int nrToTransferTo = Helper.readInt();
                                     System.out.println("Please enter the amount to transfer: ");
-                                    Double savingsTransferAmount = Helper.readDouble();
+                                    double savingsTransferAmount = Helper.readDouble();
                                     System.out.println("Please enter a description for the transfer: ");
                                     String savingsTransferDescription = Helper.readLine();
-                                    this.getBank().transferFunds(this.customer.getAccountByType("savings"), this.customer.getAccountByNumber(nrToTransferTo), savingsTransferAmount, savingsTransferDescription);
+                                    this.getTeller().transferFunds(this.customer.getAccountByType("savings"), this.customer.getAccountByNumber(nrToTransferTo), savingsTransferAmount, savingsTransferDescription);
                                     break;
                                 case 4:
                                     System.out.println("Please enter your password: ");
                                     String enteredPassword = Helper.readLine();
-                                    removeSavingsAccount(enteredPassword);
+                                    this.getTeller().removeSavingsAccount(this.customer, enteredPassword);
                                     break;
                                 case 5:
                                     exitSavingsAccountMenu = true;
@@ -138,13 +141,13 @@ public class CommandLineClient extends BankAbstractClient implements Teller {
                         } while (!exitSavingsAccountMenu);
                     case 2:
                         System.out.println("Please enter the initial deposit amount: ");
-                        Double depositAmount = Helper.readDouble();
-                        this.createCheckingAccount(depositAmount);
+                        double depositAmount = Helper.readDouble();
+                        this.getTeller().createCheckingAccount(this.customer, depositAmount);
                         break;
                     case 3:
                         System.out.println("Please enter your password: ");
                         String password = Helper.readLine();
-                        this.removeCustomerAccount(this.customer.getName(), password);
+                        this.getTeller().removeCustomerAccount(this.customer.getName(), password);
                         break;
                     case 4:
                         exitInnerSavingsMenu = true;
@@ -161,7 +164,7 @@ public class CommandLineClient extends BankAbstractClient implements Teller {
         if (loggedIn && this.customer.hasCheckingAccount() && !this.customer.hasSavingsAccount()) {
             boolean exitInnerCheckingMenu = false;
             do {
-                BankAbstractClient.innerMenuWithCheckingAccount();
+                MenuHelper.innerMenuWithCheckingAccount();
                 int choice = Helper.readInt();
                 switch (choice) {
                     case 1:
@@ -169,32 +172,32 @@ public class CommandLineClient extends BankAbstractClient implements Teller {
                         do {
                             System.out.println("Hello " + this.customer.getName() + "!");
                             System.out.println("Your checking account overview: " + this.customer.getAccountByType("checking"));
-                            BankAbstractClient.checkingMenu();
+                            MenuHelper.checkingMenu();
                             int checkingChoice = Helper.readInt();
                             switch (checkingChoice) {
                                 case 1:
                                     System.out.println("Please enter the amount to deposit: ");
-                                    Double checkingDepositAmount = Helper.readDouble();
-                                    this.getBank().depositFunds(this.customer.getAccountByType("checking"), checkingDepositAmount);
+                                    double checkingDepositAmount = Helper.readDouble();
+                                    this.getTeller().depositFunds(this.customer.getAccountByType("checking"), checkingDepositAmount);
                                     break;
                                 case 2:
                                     System.out.println("Please enter the amount to withdraw: ");
-                                    Double checkingWithdrawAmount = Helper.readDouble();
-                                    this.getBank().withdrawFunds(this.customer.getAccountByType("checking"), checkingWithdrawAmount);
+                                    double checkingWithdrawAmount = Helper.readDouble();
+                                    this.getTeller().withdrawFunds(this.customer.getAccountByType("checking"), checkingWithdrawAmount);
                                     break;
                                 case 3:
                                     System.out.println("Please enter the account number to transfer to: ");
-                                    Integer nrToTransferTo = Helper.readInt();
+                                    int nrToTransferTo = Helper.readInt();
                                     System.out.println("Please enter the amount to transfer: ");
-                                    Double checkingTransferAmount = Helper.readDouble();
+                                    double checkingTransferAmount = Helper.readDouble();
                                     System.out.println("Please enter a description for the transfer: ");
                                     String checkingTransferDescription = Helper.readLine();
-                                    this.getBank().transferFunds(this.customer.getAccountByType("checking"), this.customer.getAccountByNumber(nrToTransferTo), checkingTransferAmount, checkingTransferDescription);
+                                    this.getTeller().transferFunds(this.customer.getAccountByType("checking"), this.customer.getAccountByNumber(nrToTransferTo), checkingTransferAmount, checkingTransferDescription);
                                     break;
                                 case 4:
                                     System.out.println("Please enter your password: ");
                                     String enteredPassword = Helper.readLine();
-                                    removeCheckingAccount(enteredPassword);
+                                    this.getTeller().removeCheckingAccount(this.customer, enteredPassword);
                                     break;
                                 case 5:
                                     exitCheckingAccountMenu = true;
@@ -206,14 +209,14 @@ public class CommandLineClient extends BankAbstractClient implements Teller {
                         } while (!exitCheckingAccountMenu);
                     case 2:
                         System.out.println("Please enter the initial deposit amount: ");
-                        Double depositAmount = Helper.readDouble();
-                        this.createSavingsAccount(depositAmount);
+                        double depositAmount = Helper.readDouble();
+                        this.getTeller().createSavingsAccount(this.customer, depositAmount);
                         exitInnerCheckingMenu = true;
                         break;
                     case 3:
                         System.out.println("Please enter your password: ");
                         String password = Helper.readLine();
-                        this.removeCustomerAccount(this.customer.getName(), password);
+                        this.getTeller().removeCustomerAccount(this.customer.getName(), password);
                         break;
                     case 4:
                         exitInnerCheckingMenu = true;
@@ -229,7 +232,7 @@ public class CommandLineClient extends BankAbstractClient implements Teller {
         if (loggedIn && this.customer.hasCheckingAccount() && this.customer.hasSavingsAccount()) {
             boolean exitInnerMenu = false;
             do {
-                BankAbstractClient.innerMenuWithBothAccounts();
+                MenuHelper.innerMenuWithBothAccounts();
                 int choice = Helper.readInt();
                 switch (choice) {
                     case 1:
@@ -237,32 +240,32 @@ public class CommandLineClient extends BankAbstractClient implements Teller {
                         do {
                             System.out.println("Hello " + this.customer.getName() + "!");
                             System.out.println("Your savings account overview: " + this.customer.getAccountByType("savings"));
-                            BankAbstractClient.savingsMenu();
+                            MenuHelper.savingsMenu();
                             int savingsChoice = Helper.readInt();
                             switch (savingsChoice) {
                                 case 1:
                                     System.out.println("Please enter the amount to deposit: ");
-                                    Double savingsDepositAmount = Helper.readDouble();
-                                    this.getBank().depositFunds(this.customer.getAccountByType("savings"), savingsDepositAmount);
+                                    double savingsDepositAmount = Helper.readDouble();
+                                    this.getTeller().depositFunds(this.customer.getAccountByType("savings"), savingsDepositAmount);
                                     break;
                                 case 2:
                                     System.out.println("Please enter the amount to withdraw: ");
-                                    Double savingsWithdrawAmount = Helper.readDouble();
-                                    this.getBank().withdrawFunds(this.customer.getAccountByType("savings"), savingsWithdrawAmount);
+                                    double savingsWithdrawAmount = Helper.readDouble();
+                                    this.getTeller().withdrawFunds(this.customer.getAccountByType("savings"), savingsWithdrawAmount);
                                     break;
                                 case 3:
                                     System.out.println("Please enter the account number to transfer to: ");
-                                    Integer nrToTransferTo = Helper.readInt();
+                                    int nrToTransferTo = Helper.readInt();
                                     System.out.println("Please enter the amount to transfer: ");
-                                    Double savingsTransferAmount = Helper.readDouble();
+                                    double savingsTransferAmount = Helper.readDouble();
                                     System.out.println("Please enter a description for the transfer: ");
                                     String savingsTransferDescription = Helper.readLine();
-                                    this.getBank().transferFunds(this.customer.getAccountByType("savings"), this.customer.getAccountByNumber(nrToTransferTo), savingsTransferAmount, savingsTransferDescription);
+                                    this.getTeller().transferFunds(this.customer.getAccountByType("savings"), this.customer.getAccountByNumber(nrToTransferTo), savingsTransferAmount, savingsTransferDescription);
                                     break;
                                 case 4:
                                     System.out.println("Please enter your password: ");
                                     String enteredPassword = Helper.readLine();
-                                    removeSavingsAccount(enteredPassword);
+                                    this.getTeller().removeSavingsAccount(this.customer, enteredPassword);
                                     break;
                                 case 5:
                                     exitSavingsAccountMenu = true;
@@ -277,32 +280,32 @@ public class CommandLineClient extends BankAbstractClient implements Teller {
                         do {
                             System.out.println("Hello " + this.customer.getName() + "!");
                             System.out.println("Your checking account overview: " + this.customer.getAccountByType("checking"));
-                            BankAbstractClient.checkingMenu();
+                            MenuHelper.checkingMenu();
                             int checkingChoice = Helper.readInt();
                             switch (checkingChoice) {
                                 case 1:
                                     System.out.println("Please enter the amount to deposit: ");
-                                    Double checkingDepositAmount = Helper.readDouble();
-                                    this.getBank().depositFunds(this.customer.getAccountByType("checking"), checkingDepositAmount);
+                                    double checkingDepositAmount = Helper.readDouble();
+                                    this.getTeller().depositFunds(this.customer.getAccountByType("checking"), checkingDepositAmount);
                                     break;
                                 case 2:
                                     System.out.println("Please enter the amount to withdraw: ");
-                                    Double checkingWithdrawAmount = Helper.readDouble();
-                                    this.getBank().withdrawFunds(this.customer.getAccountByType("checking"), checkingWithdrawAmount);
+                                    double checkingWithdrawAmount = Helper.readDouble();
+                                    this.getTeller().withdrawFunds(this.customer.getAccountByType("checking"), checkingWithdrawAmount);
                                     break;
                                 case 3:
                                     System.out.println("Please enter the account number to transfer to: ");
-                                    Integer nrToTransferTo = Helper.readInt();
+                                    int nrToTransferTo = Helper.readInt();
                                     System.out.println("Please enter the amount to transfer: ");
-                                    Double checkingTransferAmount = Helper.readDouble();
+                                    double checkingTransferAmount = Helper.readDouble();
                                     System.out.println("Please enter a description for the transfer: ");
                                     String checkingTransferDescription = Helper.readLine();
-                                    this.getBank().transferFunds(this.customer.getAccountByType("checking"), this.customer.getAccountByNumber(nrToTransferTo), checkingTransferAmount, checkingTransferDescription);
+                                    this.getTeller().transferFunds(this.customer.getAccountByType("checking"), this.customer.getAccountByNumber(nrToTransferTo), checkingTransferAmount, checkingTransferDescription);
                                     break;
                                 case 4:
                                     System.out.println("Please enter your password: ");
                                     String enteredPassword = Helper.readLine();
-                                    this.removeCheckingAccount(enteredPassword);
+                                    this.getTeller().removeCheckingAccount(this.customer, enteredPassword);
                                     break;
                                 case 5:
                                     exitCheckingAccountMenu = true;
@@ -315,7 +318,7 @@ public class CommandLineClient extends BankAbstractClient implements Teller {
                     case 3:
                         System.out.println("Please enter your password: ");
                         String password = Helper.readLine();
-                        this.removeCustomerAccount(this.customer.getName(), password);
+                        this.getTeller().removeCustomerAccount(this.customer.getName(), password);
                         break;
                     case 4:
                         exitInnerMenu = true;
@@ -328,64 +331,12 @@ public class CommandLineClient extends BankAbstractClient implements Teller {
         }
     }
 
-    @Override
-    public void reportAccountBalance(Double balance) {
-        System.out.println("Account balance: " + balance);
-    }
 
     public Customer login(String userName, String password) {
         String hashedPassword = PasswordHasher.hashPassword(password);
-        return this.getBank().login(userName, hashedPassword);
+        return this.getTeller().login(userName, hashedPassword);
     }
 
-    @Override
-    public void reportTotalBalance(Double balance) {
-        System.out.println("Total balance: " + balance);
-    }
-
-    @Override
-    public void reportTransferStatus(String status) {
-        System.out.println("Transfer status: " + status);
-    }
-
-    @Override
-    public void reportLoanStatus(String status) {
-        System.out.println("Loan status: " + status);
-    }
-
-    @Override
-    public void createCustomerAccount(String name, String eMail, String userName, String storedPassword) {
-        String hashedPassword = PasswordHasher.hashPassword(storedPassword);
-        this.getBank().createCustomerAccount(name, eMail, userName, hashedPassword);
-    }
-
-    @Override
-    public void removeCustomerAccount(String name, String password) {
-        this.getBank().removeCustomerAccount(name, password);
-    }
-
-    @Override
-    public Customer reportCustomerAccount(String userName, String password) {
-        return this.getBank().getCustomerAccount(userName, password);
-    }
-
-    public void createSavingsAccount(Double amount) {
-        this.getBank().createSavingsAccount(this.customer, amount);
-    }
-
-    public void createCheckingAccount(Double amount) {
-        this.getBank().createCheckingAccount(this.customer, amount);
-    }
-
-    public void removeSavingsAccount(String password) {
-        this.getBank().removeSavingsAccount(this.customer, password);
-    }
-
-    public void removeCheckingAccount(String password) {
-        this.getBank().removeCheckingAccount(this.customer, password);
-    }
-
-    @Override
     protected void initialize() {
         System.out.println("Welcome to Kessler Financial Ltd.");
         Helper.sleep(1000);

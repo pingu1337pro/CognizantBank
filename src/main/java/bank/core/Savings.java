@@ -1,8 +1,8 @@
-package bank.business;
+package bank.core;
 
 import lombok.Getter;
 import lombok.Setter;
-import resources.LogHandler;
+import bank.business.LogHandler;
 
 @Getter
 @Setter
@@ -10,21 +10,21 @@ public class Savings extends Account {
     private final String accountType = "savings";
     private Customer accountHolder;
 
-    private Integer accountNumber;
+    private int accountNumber;
 
-    private Double interestRate;
-    private Double interestEarned;
-    private Double balance;
-    private final Double defaultInterestRate = 0.0;
+    private double interestRate;
+    private double interestEarned;
+    private double balance;
+    private final double defaultInterestRate = 0.0;
 
-    public Savings(Customer accountHolder, Integer accountNumber, Double balance) {
+    public Savings(Customer accountHolder, int accountNumber, double balance) {
         super(accountHolder, accountNumber, balance);
         Double calculatedInterestRate = calculateInterestRate(balance);
         this.interestRate = calculatedInterestRate;
         LogHandler.doEventLogging("Savings account created: " + this + "by " + accountHolder);
     }
 
-    public Double calculateInterestRate(Double balance) {
+    public double calculateInterestRate(double balance) {
         if (balance < 250) {
             interestRate = 0.01;
         } else if (balance < 500) {

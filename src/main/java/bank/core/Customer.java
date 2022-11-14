@@ -1,12 +1,14 @@
-package bank.business;
+package bank.core;
 
 import lombok.Getter;
 import lombok.Setter;
-import resources.LogHandler;
+import bank.business.LogHandler;
 import resources.PasswordHasher;
 
 import java.util.ArrayList;
 import java.util.List;
+//Generate documentation for this class
+
 
 @Setter
 @Getter
@@ -56,9 +58,9 @@ public class Customer {
         return false;
     }
 
-    public Account getAccountByNumber(Integer accountNumber) {
+    public Account getAccountByNumber(int accountNumber) {
         for (Account account : accounts) {
-            if (account.getAccountNumber().equals(accountNumber)) {
+            if (account.getAccountNumber() == accountNumber) {
                 return account;
             }
         }

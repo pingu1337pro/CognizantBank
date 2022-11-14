@@ -1,8 +1,8 @@
-package bank.business;
+package bank.core;
 
 import lombok.Getter;
 import lombok.Setter;
-import resources.LogHandler;
+import bank.business.LogHandler;
 
 import java.util.ArrayList;
 @Getter
@@ -11,14 +11,14 @@ public abstract class Account {
 
     private String accountType;
     private Customer customer;
-    private Integer accountNumber;
+    private int accountNumber;
 
-    Double balance;
-    Double overdraftLimit;
-    Double interestRate;
+    double balance;
+    double overdraftLimit;
+    double interestRate;
     private ArrayList<String> transactions;
 
-    public Account(Customer customer, Integer accountNumber, Double balance) {
+    public Account(Customer customer, int accountNumber, double balance) {
         this.customer = customer;
         this.accountNumber = accountNumber;
         this.balance = balance;
@@ -26,13 +26,13 @@ public abstract class Account {
         LogHandler.doEventLogging("Account created: " + this);
     }
 
-    public void deposit(Double amount) {
+    public void deposit(double amount) {
         balance += amount;
         transactions.add("Deposit: " + amount);
         LogHandler.doTransactionLogging("Deposit: " + amount + " to account: " + this);
     }
 
-    public void withdraw(Double amount) {
+    public void withdraw(double amount) {
         balance -= amount;
         transactions.add("Withdraw: " + amount);
         LogHandler.doTransactionLogging("Withdraw: " + amount + " from account: " + this);

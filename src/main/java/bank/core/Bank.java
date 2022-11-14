@@ -1,8 +1,10 @@
-package bank.business;
+package bank.core;
 
+import bank.business.BankInterface;
+import bank.presentation.Teller;
 import lombok.Getter;
 import lombok.Setter;
-import resources.LogHandler;
+import bank.business.LogHandler;
 import resources.PasswordHasher;
 
 import java.util.ArrayList;
@@ -64,8 +66,8 @@ public class Bank implements BankInterface {
         LogHandler.doErrorLogging("removeCustomerAccount called with incorrect name or password");
     }
 
-    public void createCheckingAccount(Customer customer, Double balance) {
-        Integer accountNumber = Math.abs((int) (Math.random() * 1000000));
+    public void createCheckingAccount(Customer customer, double balance) {
+        Integer accountNumber = Math.abs((int) (Math.random() * 1_000_000));
         Account account = new Checking(customer, accountNumber, balance);
         customer.addAccount(account);
         accounts.add(account);
@@ -73,8 +75,8 @@ public class Bank implements BankInterface {
         LogHandler.doEventLogging("Checking account created: " + account);
     }
 
-    public void createSavingsAccount(Customer customer, Double balance) {
-        Integer accountNumber = Math.abs((int) (Math.random() * 1000000));
+    public void createSavingsAccount(Customer customer, double balance) {
+        Integer accountNumber = Math.abs((int) (Math.random() * 1_000_000));
         Account account = new Savings(customer, accountNumber, balance);
         customer.addAccount(account);
         accounts.add(account);
@@ -112,8 +114,8 @@ public class Bank implements BankInterface {
         }
     }
 
-    public void depositFunds(Account account, Double amount) {
-        if (account != null && amount != null) {
+    public void depositFunds(Account account, double amount) {
+        if (account != null && amount >= 0) {
             account.deposit(amount);
             System.out.println("SYSTEM: Deposit successful");
             LogHandler.doEventLogging("Deposited " + amount + " to account: " + account);
@@ -123,8 +125,8 @@ public class Bank implements BankInterface {
         }
     }
 
-    public void withdrawFunds(Account account, Double amount) {
-        if (account != null && amount != null) {
+    public void withdrawFunds(Account account, double amount) {
+        if (account != null && amount >= 0) {
             account.withdraw(amount);
             System.out.println("SYSTEM: Withdrawal successful");
             LogHandler.doEventLogging("Withdrew " + amount + " from account: " + account);
@@ -134,8 +136,8 @@ public class Bank implements BankInterface {
         }
     }
 
-    public Double getTotalBalance(Customer customer) {
-        Double totalBalance = 0.0;
+    public double getTotalBalance(Customer customer) {
+        double totalBalance = 0.0;
         for (Account account : accounts) {
             if (account.getCustomer().equals(customer)) {
                 totalBalance += account.getBalance();
@@ -144,11 +146,11 @@ public class Bank implements BankInterface {
         return totalBalance;
     }
 
-    public Double getAccountBalance(Account account) {
+    public double getAccountBalance(Account account) {
         return account.getBalance();
     }
 
-    public void transferFunds(Account from, Account to, Double amount, String description) {
+    public void transferFunds(Account from, Account to, double amount, String description) {
         from.setBalance(from.getBalance() - amount);
         to.setBalance(to.getBalance() + amount);
         LogHandler.doTransactionLogging("Transfer: " + amount + " from " + from + " to " + to + " description: " + description);

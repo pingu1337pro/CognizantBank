@@ -1,26 +1,8 @@
 package bank.client;
 
-import bank.business.BankInterface;
-import bank.business.Teller;
-
-public abstract class BankAbstractClient implements Teller {
+public class MenuHelper {
 
     static String seperator = "----------------------------------------";
-    private final BankInterface bank;
-
-    public BankAbstractClient(BankInterface bank) {
-        if (bank == null) {
-            throw new IllegalArgumentException("null parameter");
-        }
-        this.bank = bank;
-        this.initialize();
-    }
-
-    protected BankInterface getBank() {
-        return this.bank;
-    }
-
-    protected abstract void initialize();
 
     public static void initialMenu() {
         System.out.println(seperator);

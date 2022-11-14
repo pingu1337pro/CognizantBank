@@ -1,4 +1,4 @@
-package resources;
+package bank.business;
 
 import bank.business.BankLogger;
 
