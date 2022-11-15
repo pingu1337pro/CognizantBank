@@ -344,6 +344,9 @@ public class CommandLineClient extends ClientBlueprint {
     }
 
     @Override
+    public void reportCreateCustomerAccount(boolean success) {}
+
+    @Override
     public String toString() {
         return "CLI customer: " + customer;
     }

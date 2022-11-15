@@ -24,5 +24,7 @@ public class SwingGuiClient extends ClientBlueprint {
         frame.setSize(1_000,750);
         frame.setVisible(true);
     }
+    @Override
+    public void reportCreateCustomerAccount(boolean success) {}
 
 }
