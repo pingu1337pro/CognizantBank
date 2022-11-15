@@ -31,7 +31,6 @@ public class Bank implements BankInterface {
             customers.add(customer);
             LogHandler.doEventLogging("Customer added: " + customer);
         } else {
-            System.out.println("ERROR: Customer can't be null");
             LogHandler.doErrorLogging("addCustomer called with null customer");
         }
     }
@@ -60,10 +59,8 @@ public class Bank implements BankInterface {
             if (c.getName().equals(name) && c.getStoredPassword().equals(hashedPassword)) {
                 customers.remove(c);
                 LogHandler.doEventLogging("Customer removed: " + c);
-                System.out.println("SYSTEM: Customer removed: " + c);
             }
         }
-        System.out.println("ERROR: Name or password is incorrect");
         LogHandler.doErrorLogging("removeCustomerAccount called with incorrect name or password");
     }
 
@@ -72,7 +69,6 @@ public class Bank implements BankInterface {
         Account account = new Checking(customer, accountNumber, balance);
         customer.addAccount(account);
         accounts.add(account);
-        System.out.println("SYSTEM: Checking account created: " + account);
         LogHandler.doEventLogging("Checking account created: " + account);
     }
 
@@ -81,7 +77,6 @@ public class Bank implements BankInterface {
         Account account = new Savings(customer, accountNumber, balance);
         customer.addAccount(account);
         accounts.add(account);
-        System.out.println("SYSTEM: Savings account created: " + account);
         LogHandler.doEventLogging("Savings account created: " + account);
     }
 
@@ -91,7 +86,6 @@ public class Bank implements BankInterface {
                 if (account instanceof Savings && account.getCustomer().equals(customer)) {
                     accounts.remove(account);
                     customer.removeAccount(account, password);
-                    System.out.println("SYSTEM: Savings account removed: " + account);
                     LogHandler.doEventLogging("Savings account removed: " + account);
                 }
             }
@@ -106,7 +100,6 @@ public class Bank implements BankInterface {
                 if (account instanceof Checking && account.getCustomer().equals(customer)) {
                     accounts.remove(account);
                     customer.removeAccount(account, password);
-                    System.out.println("SYSTEM: Checking account removed: " + account);
                     LogHandler.doEventLogging("Checking account removed: " + account);
                 }
             }
@@ -118,10 +111,8 @@ public class Bank implements BankInterface {
     public void depositFunds(Account account, double amount) {
         if (account != null && amount >= 0) {
             account.deposit(amount);
-            System.out.println("SYSTEM: Deposit successful");
             LogHandler.doEventLogging("Deposited " + amount + " to account: " + account);
         } else {
-            System.out.println("ERROR: Account or amount can't be null");
             LogHandler.doErrorLogging("depositFunds called with null parameter");
         }
     }
@@ -129,10 +120,8 @@ public class Bank implements BankInterface {
     public void withdrawFunds(Account account, double amount) {
         if (account != null && amount >= 0) {
             account.withdraw(amount);
-            System.out.println("SYSTEM: Withdrawal successful");
             LogHandler.doEventLogging("Withdrew " + amount + " from account: " + account);
         } else {
-            System.out.println("ERROR: Account or amount can't be null");
             LogHandler.doErrorLogging("withdrawFunds called with null parameter");
         }
     }
@@ -161,7 +150,6 @@ public class Bank implements BankInterface {
     public Customer login(String userName, String password) {
         if(userName == null || Objects.equals(password, "")) {
             LogHandler.doErrorLogging("Login failed with invalid or empty fields: " + userName);
-            System.out.println("ERROR: Invalid account number or password. Did fill in all fields?");
         }else {
             for (Customer customer : customers) {
                 if (customer.getUserName().equals(userName) && PasswordHasher.hashPassword(password).equals(customer.getStoredPassword())) {
