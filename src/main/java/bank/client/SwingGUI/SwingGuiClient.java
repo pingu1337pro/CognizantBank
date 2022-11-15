@@ -27,4 +27,44 @@ public class SwingGuiClient extends ClientBlueprint {
     @Override
     public void reportCreateCustomerAccount(boolean success) {}
 
+    @Override
+    public void reportRemoveCustomerAccount(boolean status) {
+
+    }
+
+    @Override
+    public void reportCreateCheckingAccount(boolean status) {
+
+    }
+
+    @Override
+    public void reportCreateSavingsAccount(boolean status) {
+
+    }
+
+    @Override
+    public void reportRemoveSavingsAccount(boolean status) {
+
+    }
+
+    @Override
+    public void reportRemoveCheckingAccount(boolean status) {
+
+    }
+
+    @Override
+    public void reportDeposit(boolean status) {
+
+    }
+
+    @Override
+    public void reportWithdraw(boolean status) {
+
+    }
+
+    @Override
+    public void reportTransfer(boolean status) {
+
+    }
+
 }
