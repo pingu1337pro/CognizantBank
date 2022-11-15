@@ -24,7 +24,6 @@ public abstract class ClientBlueprint {
     public abstract void reportWithdraw(boolean status);
     public abstract void reportTransfer(boolean status);
 
-    //TODO: add methods to display messages according to boolean return values of teller methods
 
 
 
