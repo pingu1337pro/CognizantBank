@@ -25,6 +25,14 @@ public class Customer {
         LogHandler.doEventLogging("Customer created: " + this);
     }
 
+    public Customer(String name, String eMail, String userName, String storedPassword) {
+        this.name = name;
+        this.eMail = eMail;
+        this.userName = userName;
+        this.storedPassword = storedPassword;
+        LogHandler.doEventLogging("Customer created: " + this);
+    }
+
     public void addAccount(Account account) {
         accounts.add(account);
         LogHandler.doEventLogging("Account: " + account + "; added to customer: " + this);

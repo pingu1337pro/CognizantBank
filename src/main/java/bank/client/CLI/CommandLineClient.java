@@ -35,7 +35,7 @@ public class CommandLineClient extends ClientBlueprint {
                     String loginUserName = Helper.readLine();
                     System.out.println("Please enter your password: ");
                     String loginPassword = Helper.readLine();
-                    setCustomer(this.login(loginUserName, loginPassword));
+                    setCustomer(this.getTeller().login(loginUserName, loginPassword));
                     loggedIn = true;
                     break;
                 case 2:
