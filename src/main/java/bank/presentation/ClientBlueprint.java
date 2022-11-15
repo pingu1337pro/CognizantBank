@@ -14,10 +14,15 @@ public abstract class ClientBlueprint {
     protected Teller getTeller() {
         return this.teller;
     }
-    public abstract void reportCreateCustomerAccount(boolean success);
-    public abstract void reportGetCustomerAccount(boolean success);
-
-
+    public abstract void reportCreateCustomerAccount(boolean status);
+    public abstract void reportRemoveCustomerAccount(boolean status);
+    public abstract void reportCreateCheckingAccount(boolean status);
+    public abstract void reportCreateSavingsAccount(boolean status);
+    public abstract void reportRemoveSavingsAccount(boolean status);
+    public abstract void reportRemoveCheckingAccount(boolean status);
+    public abstract void reportDeposit(boolean status);
+    public abstract void reportWithdraw(boolean status);
+    public abstract void reportTransfer(boolean status);
 
     //TODO: add methods to display messages according to boolean return values of teller methods
 
