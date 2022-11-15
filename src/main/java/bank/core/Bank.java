@@ -14,6 +14,7 @@ import java.util.Objects;
 @Getter
 @Setter
 public class Bank implements BankInterface {
+    //TODO: Remove sout calls
 
     List<Customer> customers = new ArrayList<>();
     List<Account> accounts = new ArrayList<>();
