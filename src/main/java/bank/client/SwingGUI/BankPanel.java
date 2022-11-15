@@ -39,7 +39,7 @@ public class BankPanel extends JPanel {
 
         JLabel welcomeLabel = getWelcomeMessage();
         welcomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 40));
         menuPanel.add(welcomeLabel, BorderLayout.NORTH);
 
         JPanel buttonsPanel = getButtonsPanel(5);
@@ -73,8 +73,8 @@ public class BankPanel extends JPanel {
 
         for (int i=0; i<amountButtons; i++) {
             JButton button = new JButton(String.valueOf(i));
-            button.setSize(100, 50);
-            buttonsTable.add(button);
+            button.setSize(400, 50);
+            buttonsPanel.add(button);
         }
 
         buttonsPanel.add(buttonsTable);
