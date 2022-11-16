@@ -4,7 +4,7 @@ import bank.core.Account;
 import bank.core.Customer;
 
 public interface Teller {
-   boolean createCustomerAccount(String name, String eMail, String userName, String password);
+   boolean createCustomerAccount(String firstName, String lastName, String birthDate, String eMail, String userName, String password);
    Customer getCustomerAccount(String userName, String password);
    boolean removeCustomerAccount(String name, String password);
    boolean createCheckingAccount(Customer customer, double balance);
