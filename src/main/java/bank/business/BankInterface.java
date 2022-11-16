@@ -6,7 +6,7 @@ import bank.core.Customer;
 public interface BankInterface {
 
     void addCustomer(Customer customer);
-    void createCustomerAccount(String name, String eMail, String userName, String password);
+    void createCustomerAccount(String firstName, String lastName, String birthDate, String eMail, String userName, String password);
     Customer getCustomerAccount(String userName, String password);
     void removeCustomerAccount(String name, String password);
     void createCheckingAccount(Customer customer, double balance);
@@ -18,5 +18,5 @@ public interface BankInterface {
     double getTotalBalance(Customer customer);
     double getAccountBalance(Account account);
     void transferFunds(Account from, Account to, double amount, String description);
-    Customer login(String userName, String password);
+    Customer login(String userName, String hashedPassword);
 }

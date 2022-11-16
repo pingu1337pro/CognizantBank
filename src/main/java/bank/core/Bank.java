@@ -17,13 +17,7 @@ public class Bank implements BankInterface {
 
     List<Customer> customers = new ArrayList<>();
     List<Account> accounts = new ArrayList<>();
-    private List<Teller> tellers;
 
-
-    public void addTeller(Teller teller) {
-        tellers.add(teller);
-        LogHandler.doEventLogging("Teller added: " + teller);
-    }
 
     public void addCustomer(Customer customer) {
         if (customer != null) {
@@ -34,8 +28,8 @@ public class Bank implements BankInterface {
         }
     }
 
-    public void createCustomerAccount(String name, String eMail,String userName, String password) {
-        Customer customer = new Customer(name, eMail, userName);
+    public void createCustomerAccount(String firstName, String lastName, String birthDate, String eMail,String userName, String password) {
+        Customer customer = new Customer(firstName, lastName, birthDate, eMail, userName, password);
         customer.setStoredPassword(PasswordHasher.hashPassword(password));
         addCustomer(customer);
     }
@@ -52,10 +46,10 @@ public class Bank implements BankInterface {
         return null;
     }
 
-    public void removeCustomerAccount(String name, String password) {
+    public void removeCustomerAccount(String userName, String password) {
         String hashedPassword = PasswordHasher.hashPassword(password);
         for (Customer c : customers) {
-            if (c.getName().equals(name) && c.getStoredPassword().equals(hashedPassword)) {
+            if (c.getUserName().equals(userName) && c.getStoredPassword().equals(hashedPassword)) {
                 customers.remove(c);
                 LogHandler.doEventLogging("Customer removed: " + c);
             }
@@ -146,12 +140,12 @@ public class Bank implements BankInterface {
     }
 
     @Override
-    public Customer login(String userName, String password) {
-        if(userName == null || Objects.equals(password, "")) {
+    public Customer login(String userName, String hashedPassword) {
+        if(userName == null || Objects.equals(hashedPassword, "")) {
             LogHandler.doErrorLogging("Login failed with invalid or empty fields: " + userName);
         }else {
             for (Customer customer : customers) {
-                if (customer.getUserName().equals(userName) && PasswordHasher.hashPassword(password).equals(customer.getStoredPassword())) {
+                if (customer.getUserName().equals(userName) && hashedPassword.equals(customer.getStoredPassword())) {
                     LogHandler.doEventLogging("Login successful: " + customer);
                     return customer;
                 }

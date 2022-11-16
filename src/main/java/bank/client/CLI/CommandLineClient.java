@@ -1,5 +1,6 @@
 package bank.client.CLI;
 
+import bank.business.BankLogger;
 import bank.presentation.Teller;
 import bank.client.MenuHelper;
 import bank.core.Customer;
@@ -14,7 +15,6 @@ import resources.PasswordHasher;
 @Setter
 public class CommandLineClient extends ClientBlueprint {
 
-    private Customer customer;
 
 
     public CommandLineClient(Teller teller) {
@@ -24,6 +24,7 @@ public class CommandLineClient extends ClientBlueprint {
     }
 
     public void runBank() {
+        Customer thisCustomer = null;
         boolean exitBank = false;
         boolean loggedIn = false;
         do {
@@ -35,20 +36,30 @@ public class CommandLineClient extends ClientBlueprint {
                     String loginUserName = Helper.readLine();
                     System.out.println("Please enter your password: ");
                     String loginPassword = Helper.readLine();
-                    setCustomer(this.getTeller().login(loginUserName, loginPassword));
-                    loggedIn = true;
+                    Customer tempCustomer = this.getTeller().login(loginUserName, loginPassword);
+                    if(tempCustomer != null){
+                        thisCustomer = tempCustomer;
+                        loggedIn = true;
+                    } else {
+                        System.out.println("Login failed");
+                        System.out.println("Please try again");
+                    }
                     break;
                 case 2:
                     MenuHelper.accountCreationMenu();
-                    System.out.print("Please enter your name: ");
-                    String name = Helper.readLine();
-                    System.out.print("Please enter your email: ");
+                    System.out.print("Please enter your first name: ");
+                    String firstName = Helper.readLine();
+                    System.out.print("Please enter your last name: ");
+                    String lastName = Helper.readLine();
+                    System.out.print("Please enter your last name: ");
+                    String birthDate = Helper.readLine();
+                    System.out.print("Please enter your date of birth: ");
                     String email = Helper.readLine();
                     System.out.println("Please enter your desired Username: ");
                     String newUserName = Helper.readLine();
                     System.out.print("Please enter your password: ");
                     String newPassword = Helper.readLine();
-                    this.getTeller().createCustomerAccount(name, email, newUserName, newPassword);
+                    this.getTeller().createCustomerAccount(firstName, lastName, birthDate, email, newUserName, newPassword);
                     break;
                 case 3:
                     exitBank = true;
@@ -59,7 +70,7 @@ public class CommandLineClient extends ClientBlueprint {
                     break;
             }
         } while (!loggedIn && !exitBank);
-        if (loggedIn && !this.customer.hasCheckingAccount() && !this.customer.hasSavingsAccount()) {
+        if (loggedIn && !thisCustomer.hasCheckingAccount() && !thisCustomer.hasSavingsAccount()) {
             boolean exitInnerMenu = false;
             do {
                 MenuHelper.innerMenuNoAccounts();
@@ -68,23 +79,23 @@ public class CommandLineClient extends ClientBlueprint {
                     case 1:
                         System.out.println("Please enter the initial deposit amount: ");
                         double savingsAmount = Helper.readDouble();
-                        this.getTeller().createSavingsAccount(this.customer, savingsAmount);
+                        this.getTeller().createSavingsAccount(thisCustomer, savingsAmount);
                         exitInnerMenu = true;
                         break;
                     case 2:
                         System.out.println("Please enter the initial deposit amount: ");
                         double depositAmount = Helper.readDouble();
-                        this.getTeller().createCheckingAccount(this.customer, depositAmount);
+                        this.getTeller().createCheckingAccount(thisCustomer, depositAmount);
                         exitInnerMenu = true;
                         break;
                     case 3:
                         System.out.println("Please enter your password: ");
                         String password = Helper.readLine();
-                        this.getTeller().removeCustomerAccount(this.customer.getName(), password);
+                        this.getTeller().removeCustomerAccount(thisCustomer.getUserName(), password);
                         break;
                     case 4:
                         exitInnerMenu = true;
-                        LogHandler.doEventLogging("Customer logged out: " + this.customer);
+                        LogHandler.doEventLogging("Customer logged out: " + thisCustomer);
                         LogHandler.doEventLogging("CLI exit");
                         break;
                     default:
@@ -93,7 +104,7 @@ public class CommandLineClient extends ClientBlueprint {
                 }
             } while (!exitInnerMenu);
         }
-        if (loggedIn && !this.customer.hasCheckingAccount() && this.customer.hasSavingsAccount()) {
+        if (loggedIn && !thisCustomer.hasCheckingAccount() && thisCustomer.hasSavingsAccount()) {
             boolean exitInnerSavingsMenu = false;
             do {
                 MenuHelper.innerMenuWithSavingsAccount();
@@ -102,20 +113,20 @@ public class CommandLineClient extends ClientBlueprint {
                     case 1:
                         boolean exitSavingsAccountMenu = false;
                         do {
-                            System.out.println("Hello " + this.customer.getName() + "!");
-                            System.out.println("Your savings account overview: " + this.customer.getAccountByType("savings"));
+                            System.out.println("Hello " + thisCustomer.getUserName() + "!");
+                            System.out.println("Your savings account overview: " + thisCustomer.getAccountByType("savings"));
                             MenuHelper.savingsMenu();
                             int savingsChoice = Helper.readInt();
                             switch (savingsChoice) {
                                 case 1:
                                     System.out.println("Please enter the amount to deposit: ");
                                     double savingsDepositAmount = Helper.readDouble();
-                                    this.getTeller().depositFunds(this.customer.getAccountByType("savings"), savingsDepositAmount);
+                                    this.getTeller().depositFunds(thisCustomer.getAccountByType("savings"), savingsDepositAmount);
                                     break;
                                 case 2:
                                     System.out.println("Please enter the amount to withdraw: ");
                                     double savingsWithdrawAmount = Helper.readDouble();
-                                    this.getTeller().withdrawFunds(this.customer.getAccountByType("savings"), savingsWithdrawAmount);
+                                    this.getTeller().withdrawFunds(thisCustomer.getAccountByType("savings"), savingsWithdrawAmount);
                                     break;
                                 case 3:
                                     System.out.println("Please enter the account number to transfer to: ");
@@ -124,12 +135,12 @@ public class CommandLineClient extends ClientBlueprint {
                                     double savingsTransferAmount = Helper.readDouble();
                                     System.out.println("Please enter a description for the transfer: ");
                                     String savingsTransferDescription = Helper.readLine();
-                                    this.getTeller().transferFunds(this.customer.getAccountByType("savings"), this.customer.getAccountByNumber(nrToTransferTo), savingsTransferAmount, savingsTransferDescription);
+                                    this.getTeller().transferFunds(thisCustomer.getAccountByType("savings"), thisCustomer.getAccountByNumber(nrToTransferTo), savingsTransferAmount, savingsTransferDescription);
                                     break;
                                 case 4:
                                     System.out.println("Please enter your password: ");
                                     String enteredPassword = Helper.readLine();
-                                    this.getTeller().removeSavingsAccount(this.customer, enteredPassword);
+                                    this.getTeller().removeSavingsAccount(thisCustomer, enteredPassword);
                                     break;
                                 case 5:
                                     exitSavingsAccountMenu = true;
@@ -142,16 +153,16 @@ public class CommandLineClient extends ClientBlueprint {
                     case 2:
                         System.out.println("Please enter the initial deposit amount: ");
                         double depositAmount = Helper.readDouble();
-                        this.getTeller().createCheckingAccount(this.customer, depositAmount);
+                        this.getTeller().createCheckingAccount(thisCustomer, depositAmount);
                         break;
                     case 3:
                         System.out.println("Please enter your password: ");
                         String password = Helper.readLine();
-                        this.getTeller().removeCustomerAccount(this.customer.getName(), password);
+                        this.getTeller().removeCustomerAccount(thisCustomer.getUserName(), password);
                         break;
                     case 4:
                         exitInnerSavingsMenu = true;
-                        LogHandler.doEventLogging("Customer logged out: " + this.customer);
+                        LogHandler.doEventLogging("Customer logged out: " + thisCustomer);
                         LogHandler.doEventLogging("CLI exit");
                         break;
                     default:
@@ -161,7 +172,7 @@ public class CommandLineClient extends ClientBlueprint {
             } while (!exitInnerSavingsMenu);
         }
 
-        if (loggedIn && this.customer.hasCheckingAccount() && !this.customer.hasSavingsAccount()) {
+        if (loggedIn && thisCustomer.hasCheckingAccount() && !thisCustomer.hasSavingsAccount()) {
             boolean exitInnerCheckingMenu = false;
             do {
                 MenuHelper.innerMenuWithCheckingAccount();
@@ -170,20 +181,20 @@ public class CommandLineClient extends ClientBlueprint {
                     case 1:
                         boolean exitCheckingAccountMenu = false;
                         do {
-                            System.out.println("Hello " + this.customer.getName() + "!");
-                            System.out.println("Your checking account overview: " + this.customer.getAccountByType("checking"));
+                            System.out.println("Hello " + thisCustomer.getUserName() + "!");
+                            System.out.println("Your checking account overview: " + thisCustomer.getAccountByType("checking"));
                             MenuHelper.checkingMenu();
                             int checkingChoice = Helper.readInt();
                             switch (checkingChoice) {
                                 case 1:
                                     System.out.println("Please enter the amount to deposit: ");
                                     double checkingDepositAmount = Helper.readDouble();
-                                    this.getTeller().depositFunds(this.customer.getAccountByType("checking"), checkingDepositAmount);
+                                    this.getTeller().depositFunds(thisCustomer.getAccountByType("checking"), checkingDepositAmount);
                                     break;
                                 case 2:
                                     System.out.println("Please enter the amount to withdraw: ");
                                     double checkingWithdrawAmount = Helper.readDouble();
-                                    this.getTeller().withdrawFunds(this.customer.getAccountByType("checking"), checkingWithdrawAmount);
+                                    this.getTeller().withdrawFunds(thisCustomer.getAccountByType("checking"), checkingWithdrawAmount);
                                     break;
                                 case 3:
                                     System.out.println("Please enter the account number to transfer to: ");
@@ -192,12 +203,12 @@ public class CommandLineClient extends ClientBlueprint {
                                     double checkingTransferAmount = Helper.readDouble();
                                     System.out.println("Please enter a description for the transfer: ");
                                     String checkingTransferDescription = Helper.readLine();
-                                    this.getTeller().transferFunds(this.customer.getAccountByType("checking"), this.customer.getAccountByNumber(nrToTransferTo), checkingTransferAmount, checkingTransferDescription);
+                                    this.getTeller().transferFunds(thisCustomer.getAccountByType("checking"), thisCustomer.getAccountByNumber(nrToTransferTo), checkingTransferAmount, checkingTransferDescription);
                                     break;
                                 case 4:
                                     System.out.println("Please enter your password: ");
                                     String enteredPassword = Helper.readLine();
-                                    this.getTeller().removeCheckingAccount(this.customer, enteredPassword);
+                                    this.getTeller().removeCheckingAccount(thisCustomer, enteredPassword);
                                     break;
                                 case 5:
                                     exitCheckingAccountMenu = true;
@@ -210,13 +221,13 @@ public class CommandLineClient extends ClientBlueprint {
                     case 2:
                         System.out.println("Please enter the initial deposit amount: ");
                         double depositAmount = Helper.readDouble();
-                        this.getTeller().createSavingsAccount(this.customer, depositAmount);
+                        this.getTeller().createSavingsAccount(thisCustomer, depositAmount);
                         exitInnerCheckingMenu = true;
                         break;
                     case 3:
                         System.out.println("Please enter your password: ");
                         String password = Helper.readLine();
-                        this.getTeller().removeCustomerAccount(this.customer.getName(), password);
+                        this.getTeller().removeCustomerAccount(thisCustomer.getUserName(), password);
                         break;
                     case 4:
                         exitInnerCheckingMenu = true;
@@ -229,7 +240,7 @@ public class CommandLineClient extends ClientBlueprint {
 
         }
 
-        if (loggedIn && this.customer.hasCheckingAccount() && this.customer.hasSavingsAccount()) {
+        if (loggedIn && thisCustomer.hasCheckingAccount() && thisCustomer.hasSavingsAccount()) {
             boolean exitInnerMenu = false;
             do {
                 MenuHelper.innerMenuWithBothAccounts();
@@ -238,20 +249,20 @@ public class CommandLineClient extends ClientBlueprint {
                     case 1:
                         boolean exitSavingsAccountMenu = false;
                         do {
-                            System.out.println("Hello " + this.customer.getName() + "!");
-                            System.out.println("Your savings account overview: " + this.customer.getAccountByType("savings"));
+                            System.out.println("Hello " + thisCustomer.getUserName() + "!");
+                            System.out.println("Your savings account overview: " + thisCustomer.getAccountByType("savings"));
                             MenuHelper.savingsMenu();
                             int savingsChoice = Helper.readInt();
                             switch (savingsChoice) {
                                 case 1:
                                     System.out.println("Please enter the amount to deposit: ");
                                     double savingsDepositAmount = Helper.readDouble();
-                                    this.getTeller().depositFunds(this.customer.getAccountByType("savings"), savingsDepositAmount);
+                                    this.getTeller().depositFunds(thisCustomer.getAccountByType("savings"), savingsDepositAmount);
                                     break;
                                 case 2:
                                     System.out.println("Please enter the amount to withdraw: ");
                                     double savingsWithdrawAmount = Helper.readDouble();
-                                    this.getTeller().withdrawFunds(this.customer.getAccountByType("savings"), savingsWithdrawAmount);
+                                    this.getTeller().withdrawFunds(thisCustomer.getAccountByType("savings"), savingsWithdrawAmount);
                                     break;
                                 case 3:
                                     System.out.println("Please enter the account number to transfer to: ");
@@ -260,12 +271,12 @@ public class CommandLineClient extends ClientBlueprint {
                                     double savingsTransferAmount = Helper.readDouble();
                                     System.out.println("Please enter a description for the transfer: ");
                                     String savingsTransferDescription = Helper.readLine();
-                                    this.getTeller().transferFunds(this.customer.getAccountByType("savings"), this.customer.getAccountByNumber(nrToTransferTo), savingsTransferAmount, savingsTransferDescription);
+                                    this.getTeller().transferFunds(thisCustomer.getAccountByType("savings"), thisCustomer.getAccountByNumber(nrToTransferTo), savingsTransferAmount, savingsTransferDescription);
                                     break;
                                 case 4:
                                     System.out.println("Please enter your password: ");
                                     String enteredPassword = Helper.readLine();
-                                    this.getTeller().removeSavingsAccount(this.customer, enteredPassword);
+                                    this.getTeller().removeSavingsAccount(thisCustomer, enteredPassword);
                                     break;
                                 case 5:
                                     exitSavingsAccountMenu = true;
@@ -278,20 +289,20 @@ public class CommandLineClient extends ClientBlueprint {
                     case 2:
                         boolean exitCheckingAccountMenu = false;
                         do {
-                            System.out.println("Hello " + this.customer.getName() + "!");
-                            System.out.println("Your checking account overview: " + this.customer.getAccountByType("checking"));
+                            System.out.println("Hello " + thisCustomer.getUserName() + "!");
+                            System.out.println("Your checking account overview: " + thisCustomer.getAccountByType("checking"));
                             MenuHelper.checkingMenu();
                             int checkingChoice = Helper.readInt();
                             switch (checkingChoice) {
                                 case 1:
                                     System.out.println("Please enter the amount to deposit: ");
                                     double checkingDepositAmount = Helper.readDouble();
-                                    this.getTeller().depositFunds(this.customer.getAccountByType("checking"), checkingDepositAmount);
+                                    this.getTeller().depositFunds(thisCustomer.getAccountByType("checking"), checkingDepositAmount);
                                     break;
                                 case 2:
                                     System.out.println("Please enter the amount to withdraw: ");
                                     double checkingWithdrawAmount = Helper.readDouble();
-                                    this.getTeller().withdrawFunds(this.customer.getAccountByType("checking"), checkingWithdrawAmount);
+                                    this.getTeller().withdrawFunds(thisCustomer.getAccountByType("checking"), checkingWithdrawAmount);
                                     break;
                                 case 3:
                                     System.out.println("Please enter the account number to transfer to: ");
@@ -300,12 +311,12 @@ public class CommandLineClient extends ClientBlueprint {
                                     double checkingTransferAmount = Helper.readDouble();
                                     System.out.println("Please enter a description for the transfer: ");
                                     String checkingTransferDescription = Helper.readLine();
-                                    this.getTeller().transferFunds(this.customer.getAccountByType("checking"), this.customer.getAccountByNumber(nrToTransferTo), checkingTransferAmount, checkingTransferDescription);
+                                    this.getTeller().transferFunds(thisCustomer.getAccountByType("checking"), thisCustomer.getAccountByNumber(nrToTransferTo), checkingTransferAmount, checkingTransferDescription);
                                     break;
                                 case 4:
                                     System.out.println("Please enter your password: ");
                                     String enteredPassword = Helper.readLine();
-                                    this.getTeller().removeCheckingAccount(this.customer, enteredPassword);
+                                    this.getTeller().removeCheckingAccount(thisCustomer, enteredPassword);
                                     break;
                                 case 5:
                                     exitCheckingAccountMenu = true;
@@ -318,7 +329,7 @@ public class CommandLineClient extends ClientBlueprint {
                     case 3:
                         System.out.println("Please enter your password: ");
                         String password = Helper.readLine();
-                        this.getTeller().removeCustomerAccount(this.customer.getName(), password);
+                        this.getTeller().removeCustomerAccount(thisCustomer.getUserName(), password);
                         break;
                     case 4:
                         exitInnerMenu = true;
@@ -386,8 +397,5 @@ public class CommandLineClient extends ClientBlueprint {
 
     }
 
-    @Override
-    public String toString() {
-        return "CLI customer: " + customer;
-    }
+
 }

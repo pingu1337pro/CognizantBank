@@ -21,10 +21,10 @@ public class BankSystem implements Teller {
     }
 
     @Override
-    public boolean createCustomerAccount(String name, String eMail, String userName, String password) {
-        if (validateInput(name, eMail, userName, password)) {
+    public boolean createCustomerAccount(String firstName, String lastName, String birthDate, String eMail, String userName, String password) {
+        if (validateInput(firstName, lastName, birthDate, eMail, userName, password)) {
             String hashedPassword = PasswordHasher.hashPassword(password);
-            this.getBank().createCustomerAccount(name, eMail, userName, hashedPassword);
+            this.getBank().createCustomerAccount(firstName, lastName, birthDate, eMail, userName, hashedPassword);
             return true;
         }
         return false;
@@ -132,14 +132,14 @@ public class BankSystem implements Teller {
 
     @Override
     public Customer login(String userName, String password) {
-        if (validateInput(userName, password)) {
+        if (userName != null && password != null) {
             String hashedPassword = PasswordHasher.hashPassword(password);
             return this.getBank().login(userName, hashedPassword);
         }
         return null;
     }
 
-    private boolean validateInput(String... strings) {
+    private boolean validateInput (String...strings){
         for (String string : strings) {
             return string != null && !string.isEmpty();
         }

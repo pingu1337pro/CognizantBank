@@ -13,24 +13,30 @@ import java.util.List;
 @Setter
 @Getter
 public class Customer {
-    String name;
+    String firstName;
+    String lastName;
+    String birthDate;
     String userName;
     String eMail;
     String storedPassword;
     List<Account> accounts = new ArrayList<>();
-    public Customer(String name, String eMail, String userName) {
-        this.name = name;
+    public Customer(String firstName, String lastName, String birthDate, String eMail, String userName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
         this.eMail = eMail;
         this.userName = userName;
         LogHandler.doEventLogging("Customer created: " + this);
     }
 
-    public Customer(String name, String eMail, String userName, String storedPassword) {
-        this.name = name;
+    public Customer(String firstName, String lastName, String birthDate, String eMail, String userName, String storedPassword) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
         this.eMail = eMail;
         this.userName = userName;
         this.storedPassword = storedPassword;
-        LogHandler.doEventLogging("Customer created: " + this);
+        LogHandler.doEventLogging("Customers instantiated: " + this);
     }
 
     public void addAccount(Account account) {
@@ -85,6 +91,6 @@ public class Customer {
     }
 
     public String toString() {
-        return "Customer: " + name + " " + eMail + " " + userName + " " + storedPassword;
+        return "Customer: " + firstName + " " + lastName + "" + birthDate + "" + eMail + " " + userName + " " + storedPassword;
     }
 }
