@@ -18,13 +18,13 @@ public class JDBCQueries {
 
 
             while (rs.next()) { // will traverse through all rows
-                String name = rs.getString("NAME");
+                String firstName = rs.getString("FIRSTNAME");
+                String lastName = rs.getString("LASTNAME");
+                String birthDate = rs.getString("BIRTHDATE");
                 String email = rs.getString("EMAIL");
                 String username = rs.getString("USERNAME");
-                String storedPassword = rs.getString("STOREDPASSWORD");
-
-                /*Customer customer = new Customer(name, email, username, storedPassword);*/
-                Customer customer = new Customer(firstName, lastName, birthDate, eMail, userName, password);
+                String hashedPassword = rs.getString("STOREDPASSWORD");
+                Customer customer = new Customer(firstName, lastName, birthDate, email, username, hashedPassword);
                 customers.add(customer);
             }
 
