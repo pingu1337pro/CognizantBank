@@ -23,7 +23,7 @@ public class JDBCQueries {
                 String birthDate = rs.getString("BIRTHDATE");
                 String email = rs.getString("EMAIL");
                 String username = rs.getString("USERNAME");
-                String hashedPassword = rs.getString("STOREDPASSWORD");
+                String hashedPassword = rs.getString("HASHEDPASSWORD");
                 Customer customer = new Customer(firstName, lastName, birthDate, email, username, hashedPassword);
                 customers.add(customer);
             }
