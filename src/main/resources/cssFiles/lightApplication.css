@@ -1,0 +1,72 @@
+ .root{
+     -fx-background-color: #ffffff;
+     -fx-font-family: "Arial";
+ }
+
+ #username{
+     -fx-font-family: "Arial";
+     -fx-font-size: 12px;
+ }
+
+ .toggle-button{
+     -fx-border-radius: 0px;
+     -fx-background-color: transparent;
+     -fx-background-position: center;
+ }
+
+ .toggle-button:selected{
+ }
+
+ #title{
+     -fx-background-position: sticky;
+     -fx-font-family: "Arial";
+     -fx-font-size: 25px;
+     -fx-font-weight: BOLD;
+     -fx-fill: #000000;
+ }
+
+ .label{
+     -fx-font-family: "Arial";
+     -fx-font-size: 15px;
+     -fx-fill: #000000;
+ }
+
+ .text-field{
+     -fx-background-color: transparent;
+     -fx-font-size: 14px;
+     -fx-text-fill: #000000;
+     -fx-padding: 1,1,1,1;
+     -fx-border-style: hidden hidden solid hidden;
+     -fx-border-width: 1.5px;
+     -fx-border-color: #000000;
+ }
+
+ .text-field:focused{
+     -fx-border-width: 1.5px;
+     -fx-border-color: #e94033;
+ }
+
+ .button{
+     -fx-font-family: "Arial";
+     -fx-font-size: 13;
+     -fx-pref-height: 30px;
+     -fx-background-color: #e94033;
+     -fx-text-fill: #ffffff;
+     -fx-border-radius: 1px;
+ }
+
+ .button:hover{
+     -fx-background-color: #b53127;
+     -fx-scale-shape: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+ }
+
+ .button:pressed{
+     -fx-background-color: #ffffff;
+     -fx-border-color: #e94033;
+     -fx-text-fill: #e94033;
+ }
+
+ #logoutButton{
+     -fx-pref-height: 20px;
+     -fx-pref-width: 60px;
+ }
