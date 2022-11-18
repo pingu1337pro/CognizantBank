@@ -8,8 +8,8 @@ import bank.business.LogHandler;
 @Getter
 public class Checking extends Account {
 
-    private final String accountType = "checking";
     private Customer accountHolder;
+    private final String accountType = "checking";
     private double balance;
 
     private int accountNumber;
@@ -17,10 +17,15 @@ public class Checking extends Account {
     private double overdraftLimit;
     private final double defaultOverdraftLimit = 0.0;
 
-    public Checking(Customer accountHolder, int accountNumber, double balance) {
-        super(accountHolder, accountNumber, balance);
+    public Checking(Customer customer, int accountNumber, double balance) {
+        super(customer, accountNumber, balance);
         this.overdraftLimit = defaultOverdraftLimit;
-        LogHandler.doEventLogging("Checking account created: " + this + "by " + accountHolder);
+        LogHandler.doEventLogging("Checking account created: " + this);
+    }
+    public Checking(Customer customer, int accountNumber, double balance, double overdraftLimit) {
+        super(customer, accountNumber, balance);
+        this.overdraftLimit = overdraftLimit;
+        LogHandler.doEventLogging("Checking account created: " + this);
     }
 }
 

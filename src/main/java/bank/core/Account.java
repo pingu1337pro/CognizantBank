@@ -9,8 +9,9 @@ import java.util.ArrayList;
 @Setter
 public abstract class Account {
 
+    private Customer accountHolder;
+
     private String accountType;
-    private Customer customer;
     private int accountNumber;
 
     double balance;
@@ -19,7 +20,7 @@ public abstract class Account {
     private ArrayList<String> transactions;
 
     public Account(Customer customer, int accountNumber, double balance) {
-        this.customer = customer;
+        this.accountHolder = customer;
         this.accountNumber = accountNumber;
         this.balance = balance;
         this.transactions = new ArrayList<>();
@@ -40,6 +41,6 @@ public abstract class Account {
 
 
     public String toString() {
-        return "Account: " + accountType + "Nr." + accountNumber + "Balance: " + balance + "Overdraft Limit: " + overdraftLimit + "Interest Rate: " + interestRate + "Account Holder: " + customer;
+        return "Account: " + accountType + "Nr." + accountNumber + "Balance: " + balance + "Overdraft Limit: " + overdraftLimit + "Interest Rate: " + interestRate;
     }
 }

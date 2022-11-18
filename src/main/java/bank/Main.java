@@ -5,7 +5,7 @@ import bank.client.CLI.CommandLineClient;
 import bank.client.SwingGUI.SwingGuiClient;
 import bank.core.Bank;
 import bank.core.Customer;
-import bank.persistence.JDBCQueries;
+import bank.persistence.CustomerDAO;
 import resources.PasswordHasher;
 
 import java.sql.SQLException;
@@ -15,8 +15,7 @@ public class Main {
     public static void main(String[] args) throws SQLException {
         System.out.println(PasswordHasher.hashPassword("abcd"));
         Bank bank = new Bank();
-        JDBCQueries jdbcQueries = new JDBCQueries();
-        List<Customer> customerretrieve = jdbcQueries.createObjects();
+        List<Customer> customerretrieve = CustomerDAO.getInstance().getAllCustomers();
         for (Customer c : customerretrieve) {
             bank.addCustomer(c);
         }

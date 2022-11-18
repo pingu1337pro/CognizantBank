@@ -15,6 +15,8 @@ import java.util.Objects;
 @Setter
 public class Bank implements BankInterface {
 
+    //TODO: Database/Table for multiple banks?
+
     List<Customer> customers = new ArrayList<>();
     List<Account> accounts = new ArrayList<>();
 
@@ -73,10 +75,10 @@ public class Bank implements BankInterface {
         LogHandler.doEventLogging("Savings account created: " + account);
     }
 
-    public void removeSavingsAccount(Customer customer, String password) {
+    public void removeSavingsAccount(Customer customer, int accountNumber, String password) {
         if(customer != null && password != null) {
             for (Account account : accounts) {
-                if (account instanceof Savings && account.getCustomer().equals(customer)) {
+                if (account instanceof Savings && account.getAccountNumber() == accountNumber) {
                     accounts.remove(account);
                     customer.removeAccount(account, password);
                     LogHandler.doEventLogging("Savings account removed: " + account);
@@ -87,10 +89,10 @@ public class Bank implements BankInterface {
         }
     }
 
-    public void removeCheckingAccount(Customer customer, String password) {
+    public void removeCheckingAccount(Customer customer,int accountNumber , String password) {
         if(customer != null && password != null) {
             for (Account account : accounts) {
-                if (account instanceof Checking && account.getCustomer().equals(customer)) {
+                if (account instanceof Checking && account.getAccountNumber() == accountNumber) {
                     accounts.remove(account);
                     customer.removeAccount(account, password);
                     LogHandler.doEventLogging("Checking account removed: " + account);
@@ -122,7 +124,7 @@ public class Bank implements BankInterface {
     public double getTotalBalance(Customer customer) {
         double totalBalance = 0.0;
         for (Account account : accounts) {
-            if (account.getCustomer().equals(customer)) {
+            if (account.getAccountHolder().equals(customer)) {
                 totalBalance += account.getBalance();
             }
         }

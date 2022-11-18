@@ -50,25 +50,25 @@ public class BankSystem implements Teller {
     }
 
     @Override
-    public boolean createCheckingAccount(Customer customer, double balance) {
+    public boolean createCheckingAccount(double balance) {
         if (customer != null && balance >= 0) {
-            this.getBank().createCheckingAccount(customer, balance);
+            this.getBank().createCheckingAccount(balance);
             return true;
         }
         return false;
     }
 
     @Override
-    public boolean createSavingsAccount(Customer customer, double balance) {
+    public boolean createSavingsAccount(double balance) {
         if (customer != null && balance >= 0) {
-            this.getBank().createSavingsAccount(customer, balance);
+            this.getBank().createSavingsAccount(balance);
             return true;
         }
         return false;
     }
 
     @Override
-    public boolean removeSavingsAccount(Customer customer, String password) {
+    public boolean removeSavingsAccount(String password) {
         if (customer != null && validateInput(password)) {
             String hashedPassword = PasswordHasher.hashPassword(password);
             this.getBank().removeSavingsAccount(customer, hashedPassword);
