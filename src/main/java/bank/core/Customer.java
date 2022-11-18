@@ -20,6 +20,7 @@ public class Customer {
     String eMail;
     String storedPassword;
     List<Account> accounts = new ArrayList<>();
+
     public Customer(String firstName, String lastName, String birthDate, String eMail, String userName) {
         this.firstName = firstName;
         this.lastName = lastName;

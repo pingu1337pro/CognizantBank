@@ -12,8 +12,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class Main {
+    //TODO: SQL Exception handling
     public static void main(String[] args) throws SQLException {
-        System.out.println(PasswordHasher.hashPassword("abcd"));
+
         Bank bank = new Bank();
         List<Customer> customerretrieve = CustomerDAO.getInstance().getAllCustomers();
         for (Customer c : customerretrieve) {

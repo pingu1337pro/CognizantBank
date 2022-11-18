@@ -5,6 +5,8 @@ import bank.core.Customer;
 import bank.presentation.Teller;
 import resources.PasswordHasher;
 
+import java.util.List;
+
 public class BankSystem implements Teller {
 
     private final BankInterface bank;
@@ -50,28 +52,35 @@ public class BankSystem implements Teller {
     }
 
     @Override
-    public boolean createCheckingAccount(double balance) {
+    public boolean createCheckingAccount(Customer customer, double balance) {
         if (customer != null && balance >= 0) {
-            this.getBank().createCheckingAccount(balance);
+            this.getBank().createCheckingAccount(customer, balance);
             return true;
         }
         return false;
     }
 
     @Override
-    public boolean createSavingsAccount(double balance) {
+    public boolean createSavingsAccount(Customer customer, double balance) {
         if (customer != null && balance >= 0) {
-            this.getBank().createSavingsAccount(balance);
+            this.getBank().createSavingsAccount(customer, balance);
             return true;
         }
         return false;
     }
 
     @Override
-    public boolean removeSavingsAccount(String password) {
+    public boolean removeSavingsAccount(Customer customer, String password) {
+        List<Account> accounts = customer.getAccounts();
+        int accountNumber = 0;
+        for (Account account : accounts) {
+            if (account.getAccountType().equals("saving")) {
+                accountNumber = account.getAccountNumber();
+            }
+        }
         if (customer != null && validateInput(password)) {
             String hashedPassword = PasswordHasher.hashPassword(password);
-            this.getBank().removeSavingsAccount(customer, hashedPassword);
+            this.getBank().removeSavingsAccount(customer, accountNumber, hashedPassword);
             return true;
         }
         return false;
@@ -79,9 +88,16 @@ public class BankSystem implements Teller {
 
     @Override
     public boolean removeCheckingAccount(Customer customer, String password) {
+        List<Account> accounts = customer.getAccounts();
+        int accountNumber = 0;
+        for (Account account : accounts) {
+            if (account.getAccountType().equals("checking")) {
+                accountNumber = account.getAccountNumber();
+            }
+        }
         if (customer != null && validateInput(password)) {
             String hashedPassword = PasswordHasher.hashPassword(password);
-            this.getBank().removeCheckingAccount(customer, hashedPassword);
+            this.getBank().removeCheckingAccount(customer, accountNumber, hashedPassword);
             return true;
         }
         return false;

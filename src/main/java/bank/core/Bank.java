@@ -60,7 +60,7 @@ public class Bank implements BankInterface {
     }
 
     public void createCheckingAccount(Customer customer, double balance) {
-        Integer accountNumber = Math.abs((int) (Math.random() * 1_000_000));
+        int accountNumber = Math.abs((int) (Math.random() * 1_000_000));
         Account account = new Checking(customer, accountNumber, balance);
         customer.addAccount(account);
         accounts.add(account);
@@ -68,7 +68,7 @@ public class Bank implements BankInterface {
     }
 
     public void createSavingsAccount(Customer customer, double balance) {
-        Integer accountNumber = Math.abs((int) (Math.random() * 1_000_000));
+        int accountNumber = Math.abs((int) (Math.random() * 1_000_000));
         Account account = new Savings(customer, accountNumber, balance);
         customer.addAccount(account);
         accounts.add(account);

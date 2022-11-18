@@ -52,6 +52,9 @@ public class AccountDAO {
             insertStatement.executeUpdate();
             return true;
         }
+        catch (SQLException e) {
+            return false;
+        }
     }
 
 }

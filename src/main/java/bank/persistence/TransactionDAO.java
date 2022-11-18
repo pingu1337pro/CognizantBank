@@ -1,5 +1,7 @@
 package bank.persistence;
 
+import bank.core.Customer;
+
 public class TransactionDAO {
     private static TransactionDAO instance;
 
@@ -12,8 +14,5 @@ public class TransactionDAO {
         }
         return instance;
     }
-
-    public void addTransaction() {
-
-    }
 }
+//TODO: this
