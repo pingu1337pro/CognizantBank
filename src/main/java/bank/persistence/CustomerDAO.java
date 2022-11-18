@@ -74,5 +74,16 @@ public class CustomerDAO {
 
     }
 
+    public int getCustomerID(Customer customer) throws SQLException {
+        String userName = customer.getUserName();
+        int customerID = 0;
+        try (Connection conn = DriverManager.getConnection("jdbc:h2:~/bank", "bank", "12345")) {
+            PreparedStatement selectStatement = conn.prepareStatement("SELECT CUSTOMERID FROM CUSTOMERS WHERE USERNAME = " + userName);
+            ResultSet rs = selectStatement.executeQuery();
+            customerID = rs.getInt("ID");
+        }
+        return customerID;
+    }
+
 
 }

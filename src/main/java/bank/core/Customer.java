@@ -13,6 +13,7 @@ import java.util.List;
 @Setter
 @Getter
 public class Customer {
+    //TODO: seperate lists for savings and checkings account
     String firstName;
     String lastName;
     String birthDate;
@@ -20,6 +21,7 @@ public class Customer {
     String eMail;
     String storedPassword;
     List<Account> accounts = new ArrayList<>();
+
 
     public Customer(String firstName, String lastName, String birthDate, String eMail, String userName) {
         this.firstName = firstName;

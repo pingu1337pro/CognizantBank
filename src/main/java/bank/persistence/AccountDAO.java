@@ -41,14 +41,16 @@ public class AccountDAO {
         }
     }
 
-    public boolean writeAccount(Account account) throws SQLException {
+    public boolean writeAccount(Customer customer, Account account) throws SQLException {
+        int customerID = CustomerDAO.getInstance().getCustomerID(customer);
         try (Connection conn = DriverManager.getConnection("jdbc:h2:~/bank", "bank", "12345")) {
-            PreparedStatement insertStatement = conn.prepareStatement("INSERT INTO ACCOUNTS (ACCOUNTNUMBER, ACCOUNTTYPE, BALANCE, OVERDRAFTLIMIT, INTERESTRATE) VALUES (?, ?, ?, ?, ?)");
-            insertStatement.setInt(1, account.getAccountNumber());
+            PreparedStatement insertStatement = conn.prepareStatement("INSERT INTO ACCOUNTS (CUSTOMERID, ACCOUNTTYPE, ACCOUNTNUMBER, BALANCE, OVERDRAFTLIMIT, INTERESTRATE) VALUES (?, ?, ?, ?, ?, ?)");
+            insertStatement.setInt(1, customerID);
             insertStatement.setString(2, account.getAccountType());
-            insertStatement.setDouble(3, account.getBalance());
-            insertStatement.setDouble(4, account.getOverdraftLimit());
-            insertStatement.setDouble(5, account.getInterestRate());
+            insertStatement.setDouble(3, account.getAccountNumber());
+            insertStatement.setDouble(4, account.getBalance());
+            insertStatement.setDouble(5, account.getOverdraftLimit());
+            insertStatement.setDouble(6, account.getInterestRate());
             insertStatement.executeUpdate();
             return true;
         }
