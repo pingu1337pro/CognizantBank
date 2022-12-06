@@ -10,13 +10,16 @@ import java.util.logging.SimpleFormatter;
  *Generates a text file with anything the LogHandler sends him.
  */
 public class BankLogger {
+    String filePatternMac = "%h";
+    String filePatternWindows = "C:/Users/KSSA/Desktop/MyLogFile_";
     private Logger logger = Logger.getLogger(BankLogger.class.getName());
     private FileHandler fh = null;
 
     public BankLogger(String name) {
         SimpleDateFormat format = new SimpleDateFormat("M-d_HH-mm-ss");
+        //TODO: Choose according filePattern before running (test purposes)
         try {
-            fh = new FileHandler("C:/Users/KSSA/Desktop/MyLogFile_" + name + format.format(Calendar.getInstance().getTime()) + ".log");
+            fh = new FileHandler(filePatternMac + name + format.format(Calendar.getInstance().getTime()) + ".log");
         } catch (Exception e) {
             e.printStackTrace();
         }

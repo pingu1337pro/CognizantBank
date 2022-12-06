@@ -64,6 +64,7 @@ public class CommandLineClient extends ClientBlueprint {
                 case 3:
                     exitBank = true;
                     LogHandler.doEventLogging("CLI exited." + this);
+                    System.exit(0);
                     break;
                 default:
                     System.out.println("Invalid choice. Try again!");
@@ -164,6 +165,7 @@ public class CommandLineClient extends ClientBlueprint {
                         exitInnerSavingsMenu = true;
                         LogHandler.doEventLogging("Customer logged out: " + thisCustomer);
                         LogHandler.doEventLogging("CLI exit");
+                        System.exit(0);
                         break;
                     default:
                         System.out.println("Invalid choice. Try again!");
