@@ -1,6 +1,4 @@
-package bank.persistence;
-
-import bank.core.Customer;
+package bank.persistence.legacy;
 
 public class TransactionDAO {
     private static TransactionDAO instance;

@@ -1,7 +1,7 @@
-package bank.persistence;
+package bank.persistence.legacy;
+
 
 import bank.core.Customer;
-import resources.PasswordHasher;
 
 import java.sql.*;
 import java.util.ArrayList;

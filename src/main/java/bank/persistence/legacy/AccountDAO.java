@@ -1,4 +1,4 @@
-package bank.persistence;
+package bank.persistence.legacy;
 
 import bank.core.Account;
 import bank.core.Checking;
@@ -6,7 +6,6 @@ import bank.core.Customer;
 import bank.core.Savings;
 
 import java.sql.*;
-import java.util.List;
 
 
 public class AccountDAO {

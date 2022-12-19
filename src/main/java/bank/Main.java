@@ -5,8 +5,7 @@ import bank.client.CLI.CommandLineClient;
 import bank.client.SwingGUI.SwingGuiClient;
 import bank.core.Bank;
 import bank.core.Customer;
-import bank.persistence.CustomerDAO;
-import resources.PasswordHasher;
+import bank.persistence.legacy.CustomerDAO;
 
 import java.sql.SQLException;
 import java.util.List;
