@@ -3,9 +3,36 @@
      -fx-font-family: "Arial";
  }
 
+ #backButton{
+     -fx-background-color: transparent;
+     -fx-background-image: url('../icons/darkMode/backButton.png');
+     -fx-background-size: 30px 30px;
+     -fx-background-repeat: no-repeat;
+     -fx-background-position: center;
+
+     -fx-border-color: #ffffff;
+     -fx-border-radius: 5px;
+ }
+
+ #backButton:hover{
+     -fx-border-color: #e94033;
+     -fx-background-image: url('../icons/redIcons/backButtonInRed.png');
+ }
+
+ #backButton:selected{
+     -fx-background-image: url('../icons/lightMode/backButton.png');
+
+     -fx-border-color: #000000;
+ }
+
+ #backButton:selected:hover{
+     -fx-border-color: #e94033;
+     -fx-background-image: url('../icons/redIcons/backButtonInRed.png');
+ }
+
  #themeButton{
      -fx-background-color: transparent;
-     -fx-background-image: url('../icons/lightMode.png');
+     -fx-background-image: url('../icons/lightMode/lightMode.png');
      -fx-background-size: 30px 30px;
      -fx-background-repeat: no-repeat;
      -fx-background-position: center;
@@ -16,12 +43,18 @@
 
  #themeButton:hover{
      -fx-border-color: #e94033;
+     -fx-background-image: url('../icons/redIcons/lightmodeInRed.png');
  }
 
  #themeButton:selected{
-     -fx-background-image: url('../icons/darkMode.png');
+     -fx-background-image: url('../icons/darkMode/darkMode.png');
 
      -fx-border-color: #000000;
+ }
+
+ #themeButton:selected:hover{
+     -fx-border-color: #e94033;
+     -fx-background-image: url('../icons/redIcons/darkmodeInRed.png');
  }
 
  #username{

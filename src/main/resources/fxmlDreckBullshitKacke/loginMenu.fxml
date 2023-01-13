@@ -23,31 +23,22 @@
     <ToggleButton fx:id="themeButton" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0"
                   mnemonicParsing="false" onAction="#switchTheme" prefHeight="40.0" prefWidth="40.0"
                   GridPane.columnIndex="2"/>
-    <Label fx:id="title" alignment="CENTER" prefHeight="30.0" prefWidth="194.0" text="Please Sign up!"
+    <Label fx:id="title" alignment="CENTER" prefHeight="30.0" prefWidth="194.0" text="Please Login!"
            GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1"/>
-    <GridPane prefHeight="138.0" prefWidth="480.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+    <GridPane minHeight="150.0" minWidth="480.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="250.0" prefWidth="100.0"/>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="100.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" percentWidth="50.0" prefWidth="100.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" percentWidth="50.0" prefWidth="100.0"/>
         </columnConstraints>
         <rowConstraints>
-            <RowConstraints minHeight="40.0" percentHeight="20.0" prefHeight="40.0"/>
-            <RowConstraints minHeight="40.0" percentHeight="20.0" prefHeight="40.0"/>
-            <RowConstraints minHeight="40.0" percentHeight="20.0" prefHeight="40.0"/>
-            <RowConstraints minHeight="40.0" percentHeight="20.0" prefHeight="40.0"/>
-            <RowConstraints minHeight="25.0" percentHeight="20.0" prefHeight="40.0"/>
+            <RowConstraints minHeight="40.0" percentHeight="50.0" prefHeight="40.0"/>
+            <RowConstraints minHeight="40.0" percentHeight="50.0" prefHeight="40.0"/>
         </rowConstraints>
         <children>
-            <Label text="Please enter your first name:" GridPane.halignment="CENTER"/>
-            <Label text="Please enter your last name:" GridPane.halignment="CENTER" GridPane.rowIndex="1"/>
-            <Label text="Please enter your email:" GridPane.halignment="CENTER" GridPane.rowIndex="2"/>
-            <Label text="Please enter your password:" GridPane.halignment="CENTER" GridPane.rowIndex="3"/>
-            <Label text="Please enter your password again:" GridPane.halignment="CENTER" GridPane.rowIndex="4"/>
+            <Label text="Please enter your email:" GridPane.halignment="CENTER"/>
+            <Label text="Please enter your password:" GridPane.halignment="CENTER" GridPane.rowIndex="1"/>
+            <TextField GridPane.columnIndex="1"/>
             <TextField GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-            <TextField prefHeight="21.0" prefWidth="118.0" GridPane.columnIndex="1"/>
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="4"/>
         </children>
     </GridPane>
     <Button fx:id="submitButton" mnemonicParsing="false" text="Submit" GridPane.columnIndex="1"
