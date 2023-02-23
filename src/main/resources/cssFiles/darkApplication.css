@@ -5,7 +5,7 @@
 
  #backButton{
      -fx-background-color: transparent;
-     -fx-background-image: url('../icons/darkMode/backButton.png');
+     -fx-background-image: url('../icons/whiteIcons/backButton.png');
      -fx-background-size: 30px 30px;
      -fx-background-repeat: no-repeat;
      -fx-background-position: center;
@@ -20,7 +20,7 @@
  }
 
  #backButton:selected{
-     -fx-background-image: url('../icons/lightMode/backButton.png');
+     -fx-background-image: url('../icons/blackIcons/backButton.png');
 
      -fx-border-color: #000000;
  }
@@ -32,7 +32,7 @@
 
  #themeButton{
      -fx-background-color: transparent;
-     -fx-background-image: url('../icons/lightMode/lightMode.png');
+     -fx-background-image: url('../icons/whiteIcons/lightMode.png');
      -fx-background-size: 30px 30px;
      -fx-background-repeat: no-repeat;
      -fx-background-position: center;
@@ -47,7 +47,7 @@
  }
 
  #themeButton:selected{
-     -fx-background-image: url('../icons/darkMode/darkMode.png');
+     -fx-background-image: url('../icons/blackIcons/darkMode.png');
 
      -fx-border-color: #000000;
  }

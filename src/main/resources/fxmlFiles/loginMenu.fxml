@@ -4,8 +4,8 @@
 <?import javafx.scene.layout.*?>
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-          prefWidth="600.0" stylesheets="@../cssFiles/darkApplication.css" xmlns="http://javafx.com/javafx/17.0.2-ea"
-          xmlns:fx="http://javafx.com/fxml/1" fx:controller="bank.client.JavaFX.ButtonEventHandlerController">
+          prefWidth="600.0" stylesheets="@../cssFiles/darkApplication.css" xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml" fx:controller="bank.client.JavaFX.ButtonEventHandlerController">
     <columnConstraints>
         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0"/>
         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="100.0" prefWidth="500.0"/>

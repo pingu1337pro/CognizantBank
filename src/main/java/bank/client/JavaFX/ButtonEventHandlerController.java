@@ -42,7 +42,7 @@ public class ButtonEventHandlerController {
     }
 
     public void switchToInitialMenu(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxmlDreckBullshitKacke/initialMenu.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxmlFiles/initialMenu.fxml")));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -50,7 +50,7 @@ public class ButtonEventHandlerController {
     }
 
     public void switchToLoginMenu(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxmlDreckBullshitKacke/loginMenu.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxmlFiles/loginMenu.fxml")));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -58,7 +58,7 @@ public class ButtonEventHandlerController {
     }
 
     public void switchToSignUpMenu(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxmlDreckBullshitKacke/signUpMenu.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxmlFiles/signUpMenu.fxml")));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);

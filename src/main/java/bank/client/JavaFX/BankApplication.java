@@ -18,7 +18,7 @@ public class BankApplication extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent startMenu = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxmlDreckBullshitKacke/initialMenu.fxml")));
+        Parent startMenu = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxmlFiles/initialMenu.fxml")));
         Scene scene = new Scene(startMenu);
 
         Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/bankIcon.png")));
