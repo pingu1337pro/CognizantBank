@@ -5,7 +5,7 @@
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
           prefWidth="600.0" stylesheets="@../cssFiles/darkApplication.css" xmlns="http://javafx.com/javafx"
-          xmlns:fx="http://javafx.com/fxml" fx:controller="bank.client.JavaFX.ButtonEventHandlerController">
+          xmlns:fx="http://javafx.com/fxml" fx:controller="bank.client.JavaFX.loginMenu">
     <columnConstraints>
         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0"/>
         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="100.0" prefWidth="500.0"/>
@@ -19,7 +19,7 @@
         <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES"/>
     </rowConstraints>
     <Button fx:id="backButton" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" mnemonicParsing="false"
-            onAction="#switchToInitialMenu" prefHeight="40.0" prefWidth="40.0" GridPane.columnIndex="0"/>
+            onAction="#switchToPreviousMenu" prefHeight="40.0" prefWidth="40.0" GridPane.columnIndex="0"/>
     <ToggleButton fx:id="themeButton" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0"
                   mnemonicParsing="false" onAction="#switchTheme" prefHeight="40.0" prefWidth="40.0"
                   GridPane.columnIndex="2"/>
@@ -34,13 +34,11 @@
             <RowConstraints minHeight="40.0" percentHeight="50.0" prefHeight="40.0"/>
             <RowConstraints minHeight="40.0" percentHeight="50.0" prefHeight="40.0"/>
         </rowConstraints>
-        <children>
-            <Label text="Please enter your email:" GridPane.halignment="CENTER"/>
-            <Label text="Please enter your password:" GridPane.halignment="CENTER" GridPane.rowIndex="1"/>
-            <TextField GridPane.columnIndex="1"/>
-            <TextField GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-        </children>
+        <Label text="Please enter your email:" GridPane.halignment="CENTER"/>
+        <Label text="Please enter your password:" GridPane.halignment="CENTER" GridPane.rowIndex="1"/>
+        <TextField fx:id="email" GridPane.columnIndex="1"/>
+        <PasswordField fx:id="password" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
     </GridPane>
-    <Button fx:id="submitButton" mnemonicParsing="false" text="Submit" GridPane.columnIndex="1"
-            GridPane.halignment="RIGHT" GridPane.rowIndex="3"/>
+    <Button fx:id="submitButton" mnemonicParsing="false" onAction="#logIn" text="Submit"
+            GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3"/>
 </GridPane>

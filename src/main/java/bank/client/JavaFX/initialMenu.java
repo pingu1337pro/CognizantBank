@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.stage.Stage;
 
@@ -14,7 +15,7 @@ import java.io.IOException;
 import java.util.Objects;
 
 
-public class ButtonEventHandlerController {
+public class initialMenu {
 
     private Node node;
     private Stage stage;
@@ -26,7 +27,7 @@ public class ButtonEventHandlerController {
     private final String lightThemeUrl = Objects.requireNonNull(getClass().getResource("/cssFiles/lightApplication.css")).toExternalForm();
 
     @FXML
-    private ToggleButton themeButton;
+    private ToggleButton themeButton = new ToggleButton();
 
     @FXML
     public void switchTheme() {
@@ -41,13 +42,8 @@ public class ButtonEventHandlerController {
         }
     }
 
-    public void switchToInitialMenu(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxmlFiles/initialMenu.fxml")));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
+    @FXML
+    public Button loginButton = new Button();
 
     public void switchToLoginMenu(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxmlFiles/loginMenu.fxml")));
@@ -56,6 +52,9 @@ public class ButtonEventHandlerController {
         stage.setScene(scene);
         stage.show();
     }
+
+    @FXML
+    public Button signUpButton = new Button();
 
     public void switchToSignUpMenu(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxmlFiles/signUpMenu.fxml")));

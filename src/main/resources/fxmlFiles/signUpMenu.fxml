@@ -4,8 +4,8 @@
 <?import javafx.scene.layout.*?>
 
 <GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-          prefWidth="600.0" stylesheets="@../cssFiles/darkApplication.css" xmlns="http://javafx.com/javafx/17.0.2-ea"
-          xmlns:fx="http://javafx.com/fxml/1" fx:controller="bank.client.JavaFX.ButtonEventHandlerController">
+          prefWidth="600.0" stylesheets="@../cssFiles/darkApplication.css" xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml" fx:controller="bank.client.JavaFX.signUpMenu">
     <columnConstraints>
         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" percentWidth="0.0" prefWidth="50.0" />
         <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="480.9999877929688" />
@@ -18,12 +18,14 @@
         <RowConstraints maxHeight="138.99998779296877" minHeight="10.0" prefHeight="54.20001220703125" vgrow="SOMETIMES" />
         <RowConstraints maxHeight="111.80000000000001" minHeight="10.0" prefHeight="48.59996337890624" vgrow="SOMETIMES" />
     </rowConstraints>
-    <Button fx:id="backButton" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" mnemonicParsing="false"
-            onAction="#switchToInitialMenu" prefHeight="40.0" prefWidth="40.0" GridPane.columnIndex="0" />
-    <ToggleButton fx:id="themeButton" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" mnemonicParsing="false"
-                  onAction="#switchTheme" prefHeight="40.0" prefWidth="40.0" GridPane.columnIndex="2" />
-    <Label fx:id="title" alignment="CENTER" prefHeight="30.0" prefWidth="194.0" text="Please Sign up!" GridPane.columnIndex="1"
-           GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+    <Button fx:id="backButton" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0"
+            mnemonicParsing="false" onAction="#switchToPreviousMenu" prefHeight="40.0" prefWidth="40.0"
+            GridPane.columnIndex="0" />
+    <ToggleButton fx:id="themeButton" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0"
+                  mnemonicParsing="false" onAction="#switchTheme" prefHeight="40.0" prefWidth="40.0"
+                  GridPane.columnIndex="2" />
+    <Label fx:id="title" alignment="CENTER" prefHeight="30.0" prefWidth="194.0" GridPane.columnIndex="1"
+           text="Please Sign Up!" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
     <GridPane prefHeight="138.0" prefWidth="480.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -41,11 +43,12 @@
         <Label text="Please enter your email:" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
         <Label text="Please enter your password:" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
         <Label text="Please enter your password again:" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-        <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
-        <TextField GridPane.columnIndex="1" />
-        <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
-        <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
-        <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
+        <TextField fx:id="firstName" GridPane.columnIndex="1" />
+        <TextField fx:id="lastName" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <TextField fx:id="email" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <PasswordField fx:id="password" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <PasswordField fx:id="controlPassword" GridPane.columnIndex="1" GridPane.rowIndex="4" />
     </GridPane>
-    <Button fx:id="submitButton" mnemonicParsing="false" text="Submit" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+    <Button fx:id="submitButton" mnemonicParsing="false" onAction="#signUp" text="Submit"
+            GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
 </GridPane>
