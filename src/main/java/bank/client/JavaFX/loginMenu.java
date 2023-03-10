@@ -56,10 +56,10 @@ public class loginMenu {
     }
 
     @FXML
-    private final TextField email = new TextField();
+    private TextField email = new TextField();
 
     @FXML
-    private final PasswordField password = new PasswordField();
+    private PasswordField password = new PasswordField();
 
     @FXML
     public Button submitButton = new Button();

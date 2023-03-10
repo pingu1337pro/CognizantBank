@@ -56,19 +56,19 @@ public class signUpMenu {
     }
 
     @FXML
-    private final TextField firstName = new TextField();
+    private TextField firstName = new TextField();
 
     @FXML
-    private final TextField lastName = new TextField();
+    private TextField lastName = new TextField();
 
     @FXML
-    private final TextField email = new TextField();
+    private TextField email = new TextField();
 
     @FXML
-    private final PasswordField password = new PasswordField();
+    private PasswordField password = new PasswordField();
 
     @FXML
-    private final PasswordField controlPassword = new PasswordField();
+    private PasswordField controlPassword = new PasswordField();
 
     @FXML
     public Button submitButton = new Button();
